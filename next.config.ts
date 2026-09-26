@@ -12,6 +12,7 @@ const CSP = [
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
+  "manifest-src 'self'",
 ].join("; ");
 
 const SECURITY_HEADERS = [
@@ -29,10 +30,6 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
       {
         protocol: "https",
         hostname: "vlokvcwjmcewucmfpztn.supabase.co",

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Drawer } from "@/components/ui/Drawer";
@@ -15,15 +16,25 @@ const NAV_LINKS = [
   { label: COPY.nav.about, href: "/about" },
 ];
 
-export function Header() {
+interface HeaderUser { id: string; email?: string }
+
+export function Header({ user }: { user: HeaderUser | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  async function handleSignOut() {
+    const { createClient } = await import("@/lib/supabase/browser");
+    await createClient().auth.signOut();
+    router.refresh();
+    router.push("/");
+  }
 
   return (
     <>
@@ -69,24 +80,47 @@ export function Header() {
             <ThemeToggle
               className={!scrolled ? "text-white/80 hover:text-white" : ""}
             />
-            <Link href="/sign-up?role=owner">
-              <Button
-                variant="outline"
-                size="sm"
-                className={
-                  !scrolled
-                    ? "border-white/40 text-white hover:bg-white/10 hover:text-white"
-                    : ""
-                }
-              >
-                {COPY.nav.listProperty}
-              </Button>
-            </Link>
-            <Link href="/sign-in">
-              <Button variant="solid" size="sm">
-                {COPY.nav.signIn}
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <Link href="/account">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={
+                      !scrolled
+                        ? "border-white/40 text-white hover:bg-white/10 hover:text-white"
+                        : ""
+                    }
+                  >
+                    My Account
+                  </Button>
+                </Link>
+                <Button variant="solid" size="sm" onClick={handleSignOut}>
+                  Sign out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link href="/sign-up?role=owner">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={
+                      !scrolled
+                        ? "border-white/40 text-white hover:bg-white/10 hover:text-white"
+                        : ""
+                    }
+                  >
+                    {COPY.nav.listProperty}
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button variant="solid" size="sm">
+                    {COPY.nav.signIn}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile actions */}
@@ -123,16 +157,35 @@ export function Header() {
           ))}
         </nav>
         <div className="mt-6 flex flex-col gap-3">
-          <Link href="/sign-up?role=owner" onClick={() => setDrawerOpen(false)}>
-            <Button variant="outline" className="w-full justify-center">
-              {COPY.nav.listProperty}
-            </Button>
-          </Link>
-          <Link href="/sign-in" onClick={() => setDrawerOpen(false)}>
-            <Button variant="solid" className="w-full justify-center">
-              {COPY.nav.signIn}
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Link href="/account" onClick={() => setDrawerOpen(false)}>
+                <Button variant="outline" className="w-full justify-center">
+                  My Account
+                </Button>
+              </Link>
+              <Button
+                variant="solid"
+                className="w-full justify-center"
+                onClick={() => { setDrawerOpen(false); handleSignOut(); }}
+              >
+                Sign out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/sign-up?role=owner" onClick={() => setDrawerOpen(false)}>
+                <Button variant="outline" className="w-full justify-center">
+                  {COPY.nav.listProperty}
+                </Button>
+              </Link>
+              <Link href="/sign-in" onClick={() => setDrawerOpen(false)}>
+                <Button variant="solid" className="w-full justify-center">
+                  {COPY.nav.signIn}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </Drawer>
     </>

@@ -137,8 +137,11 @@ export function ImageUploader({
     if (accessToken) return accessToken;
     const { createClient } = await import("@/lib/supabase/browser");
     const sb = createClient();
-    const { data } = await sb.auth.getSession();
-    const token = data.session?.access_token ?? anonKey;
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return anonKey;
+    // getSession is safe here — this is browser-side code, token is for storage upload
+    const { data: sessionData } = await sb.auth.getSession();
+    const token = sessionData.session?.access_token ?? anonKey;
     setAccessToken(token);
     return token;
   }, [accessToken, anonKey]);

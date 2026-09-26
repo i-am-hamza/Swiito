@@ -30,6 +30,7 @@ import {
 } from "@/lib/queries/properties";
 import { COPY } from "@/lib/copy";
 import { getSiteSettings } from "@/lib/queries/settings";
+import { createClient } from "@/lib/supabase/server";
 import type { ValueProp } from "@/types";
 
 /* ── Metadata ─────────────────────────────────────────────────────────────── */
@@ -55,7 +56,7 @@ const ICON_MAP: Record<
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 export default async function HomePage() {
-  const [featured, recent, localities, valueProps, faqs, testimonials, settings] =
+  const [featured, recent, localities, valueProps, faqs, testimonials, settings, supabase] =
     await Promise.all([
       getFeaturedProperties(6),
       getRecentProperties(6),
@@ -64,7 +65,9 @@ export default async function HomePage() {
       getFaqs(5),
       getTestimonials(),
       getSiteSettings(),
+      createClient(),
     ]);
+  const { data: { user } } = await supabase.auth.getUser();
 
   const whatsappHref = `https://wa.me/${settings.broker_whatsapp}?text=Hi%20Swiito%2C%20I%27m%20looking%20for%20a%20place%20in%20Ranchi`;
 
@@ -134,7 +137,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <Header />
+      <Header user={user ? { id: user.id, email: user.email } : null} />
       <main>
         {/* ── HERO ──────────────────────────────────────────────────────── */}
         <section
