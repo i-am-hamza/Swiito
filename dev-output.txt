@@ -1,0 +1,30 @@
+$ next dev
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.56.1:3000
+✓ Ready in 836ms
+✓ Running next.config.ts took 185ms
+
+○ Compiling / ...
+ GET / 200 in 16.9s (next.js: 15.7s, application-code: 1172ms)
+ GET / 200 in 158ms (next.js: 9ms, application-code: 149ms)
+ GET / 200 in 129ms (next.js: 5ms, application-code: 124ms)
+ GET / 200 in 149ms (next.js: 4ms, application-code: 144ms)
+ GET / 200 in 433ms (next.js: 13ms, application-code: 420ms)
+⨯ upstream image response failed for https://images.unsplash.com/photo-1555041469-6ae23d3b2bcc?w=800&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1502672777536-5f1ab2a67f2e?w=800&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1502672777536-5f1ab2a67f2e?w=640&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1564013799819-9f6f0b2bbfd4?w=640&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1586023492125-27b2c045efd6?w=640&q=80&auto=format&fit=crop 404
+ GET /properties?locality=bariatu 404 in 697ms (next.js: 629ms, application-code: 68ms)
+ GET /properties?locality=bariatu 404 in 149ms (next.js: 23ms, application-code: 126ms)
+ GET /properties 404 in 90ms (next.js: 21ms, application-code: 69ms)
+ GET /properties 404 in 163ms (next.js: 41ms, application-code: 122ms)
+ GET /properties/2bhk-lalpur-semi-furnished-006 404 in 73ms (next.js: 23ms, application-code: 50ms)
+ GET /properties/2bhk-lalpur-semi-furnished-006 404 in 99ms (next.js: 23ms, application-code: 76ms)
+ GET /properties?featured=true 404 in 75ms (next.js: 20ms, application-code: 55ms)
+ GET /properties?featured=true 404 in 101ms (next.js: 19ms, application-code: 82ms)
+⨯ upstream image response failed for https://images.unsplash.com/photo-1555041469-6ae23d3b2bcc?w=800&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1531835551805-16d864c8d17e?w=800&q=80&auto=format&fit=crop 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1502672777536-5f1ab2a67f2e?w=800&q=80&auto=format&fit=crop 404
+^C[ELIFECYCLE] Command failed with exit code 3221225786.
