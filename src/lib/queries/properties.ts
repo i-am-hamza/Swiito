@@ -49,7 +49,7 @@ function mapProperty(
     lat: row.lat ?? null,
     lng: row.lng ?? null,
     isVerified: row.is_verified ?? false,
-    swiitoScore: (row.swiito_score as Property["swiitoScore"]) ?? null,
+    swiitoScore: (row.switto_score as Property["swiitoScore"]) ?? null,
     isFeatured: row.is_featured ?? false,
     viewCount: row.view_count ?? 0,
     publishedAt: row.published_at ?? new Date().toISOString(),
@@ -293,7 +293,7 @@ function applySort<T extends QB<T>>(q: T, sort: PropertyFilters["sort"]): T {
       return q.order("display_price", { ascending: false });
     case "score":
       return q
-        .order("swiito_score", { ascending: false, nullsFirst: false })
+        .order("switto_score", { ascending: false, nullsFirst: false })
         .order("published_at", { ascending: false });
     default:
       return q
