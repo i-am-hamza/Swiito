@@ -147,15 +147,13 @@ export default async function HomePage() {
         >
           {/* LCP hero image */}
           <Image
-            src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1920&q=80&auto=format&fit=crop"
+            src="/hero.jpg"
             alt=""
             fill
             priority
             sizes="100vw"
             className="object-cover"
             aria-hidden="true"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAAARCAAIAAoDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAD/9k="
           />
           <div
             className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/75"

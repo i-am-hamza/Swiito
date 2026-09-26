@@ -21,24 +21,24 @@ const supabase = createClient(
 );
 
 const LOCAL_IMAGES: Record<string, string> = {
-  "1531835551805-16d864c8d17e": "/properties/living-room-01.jpg",
-  "1524758631624-e2822132143d": "/properties/apartment-interior-02.jpg",
-  "1522771739844-6a9f6a5ab7b1": "/properties/kitchen-01.jpg",
+  "1531835551805-16d864c8d17e": "/properties/living-room-03.jpg",
+  "1524758631624-e2822132143d": "/properties/bedroom-05.jpg",
+  "1522771739844-6a9f6a5ab7b1": "/properties/kitchen-02.jpg",
   "1505693416388-ac5ce068fe85": "/properties/living-room-01.jpg",
-  "1586023492125-27b2c045efd6": "/properties/building-exterior-01.jpg",
+  "1586023492125-27b2c045efd6": "/properties/building-exterior-02.jpg",
   "1560448204-e02f11c3d0e2":    "/properties/apartment-interior-01.jpg",
-  "1484154218953-bbde7706e8ab": "/properties/bedroom-03.jpg",
-  "1545324418-cc1a3fa490c3":    "/properties/bathroom-01.jpg",
+  "1484154218953-bbde7706e8ab": "/properties/bedroom-04.jpg",
+  "1545324418-cc1a3fa490c3":    "/properties/bathroom-02.jpg",
   "1583847268964-b28dc8f51f92": "/properties/bedroom-01.jpg",
   "1580587771525-78b9dba3b914": "/properties/living-room-02.jpg",
   "1493809842364-78817add7ffb": "/properties/kitchen-dining-01.jpg",
-  "1555041469-6ae23d3b2bcc":    "/properties/bedroom-02.jpg",
-  "1502672777536-5f1ab2a67f2e": "/properties/apartment-interior-03.jpg",
-  "1480714378702-aba56aa814a0": "/properties/flat-exterior-01.jpg",
-  "1564013799819-9f6f0b2bbfd4": "/properties/building-exterior-01.jpg",
+  "1555041469-6ae23d3b2bcc":    "/properties/bedroom-06.jpg",
+  "1502672777536-5f1ab2a67f2e": "/properties/living-room-04.jpg",
+  "1480714378702-aba56aa814a0": "/properties/building-exterior-01.jpg",
+  "1564013799819-9f6f0b2bbfd4": "/properties/kitchen-03.jpg",
   "1486325212027-8081e485255e": "/properties/flat-exterior-01.jpg",
-  "1506905925346-21bda4d32df4": "/properties/building-exterior-01.jpg",
-  "1556909114-f6e7ad7d3136":    "/properties/bedroom-02.jpg",
+  "1506905925346-21bda4d32df4": "/properties/building-exterior-02.jpg",
+  "1556909114-f6e7ad7d3136":    "/properties/bedroom-07.jpg",
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

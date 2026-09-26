@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils/format";
+import { PropertyImagePlaceholder } from "@/components/property/PropertyImagePlaceholder";
 import type { PropertyMedia } from "@/types";
 
 interface GalleryProps {
@@ -15,6 +16,7 @@ export function Gallery({ media, title }: GalleryProps) {
   const [active, setActive] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState(0);
+  const [erroredIdx, setErroredIdx] = useState<Set<number>>(new Set());
   const touchStartX = useRef<number>(0);
   const count = media.length;
 
@@ -70,19 +72,24 @@ export function Gallery({ media, title }: GalleryProps) {
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <Image
-          key={active}
-          src={media[active].url}
-          alt={`${title} — photo ${active + 1} of ${count}`}
-          fill
-          priority={active === 0}
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1280px"
-          className="object-cover cursor-zoom-in"
-          onClick={() => {
-            setLightboxIdx(active);
-            setLightboxOpen(true);
-          }}
-        />
+        {erroredIdx.has(active) ? (
+          <PropertyImagePlaceholder type="" />
+        ) : (
+          <Image
+            key={active}
+            src={media[active].url}
+            alt={`${title} — photo ${active + 1} of ${count}`}
+            fill
+            priority={active === 0}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1280px"
+            className="object-cover cursor-zoom-in"
+            onError={() => setErroredIdx((prev) => new Set([...prev, active]))}
+            onClick={() => {
+              setLightboxIdx(active);
+              setLightboxOpen(true);
+            }}
+          />
+        )}
 
         {/* Prev / Next arrows */}
         {count > 1 && (
@@ -125,7 +132,18 @@ export function Gallery({ media, title }: GalleryProps) {
                   : "border-transparent opacity-60 hover:opacity-100"
               )}
             >
-              <Image src={m.url} alt="" fill sizes="64px" className="object-cover" />
+              {erroredIdx.has(i) ? (
+                <PropertyImagePlaceholder type="" />
+              ) : (
+                <Image
+                  src={m.url}
+                  alt=""
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                  onError={() => setErroredIdx((prev) => new Set([...prev, i]))}
+                />
+              )}
             </button>
           ))}
         </div>

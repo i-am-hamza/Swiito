@@ -1,10 +1,11 @@
-﻿import Image from "next/image";
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Bath, BedDouble, Maximize2 } from "lucide-react";
 import type { Property } from "@/types";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { StarRating } from "@/components/ui/StarRating";
 import { HeartButton } from "@/components/property/HeartButton";
+import { PropertyCardImage } from "@/components/property/PropertyCardImage";
+import { PropertyImagePlaceholder } from "@/components/property/PropertyImagePlaceholder";
 import { COPY } from "@/lib/copy";
 
 interface PropertyCardProps {
@@ -51,18 +52,14 @@ export function PropertyCard({ property, shortlisted, priority = false }: Proper
         {/* Cover photo */}
         <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
           {cover ? (
-            <Image
-              src={cover.url}
+            <PropertyCardImage
+              url={cover.url}
               alt={property.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
               priority={priority}
+              propertyType={property.propertyType}
             />
           ) : (
-            <div className="w-full h-full bg-surface-2 flex items-center justify-center">
-              <span className="text-fg-muted text-xs">No photo</span>
-            </div>
+            <PropertyImagePlaceholder type={property.propertyType} />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <span className="absolute top-3 left-3 px-2.5 py-1 text-xs font-medium rounded-full bg-black/50 text-white backdrop-blur-sm">
