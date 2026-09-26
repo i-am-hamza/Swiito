@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getAdminProperties } from "@/lib/queries/admin";
 import { PropertiesClient } from "@/components/admin/PropertiesClient";
 import type { PropertyStatus } from "@/types";
@@ -29,13 +30,15 @@ export default async function AdminPropertiesPage({
   return (
     <div className="max-w-6xl space-y-4">
       <h1 className="font-display font-bold text-2xl text-fg">Properties</h1>
-      <PropertiesClient
-        result={result}
-        initialStatus={status}
-        initialListingType={listingType}
-        initialSearch={search}
-        isStale={stale}
-      />
+      <Suspense fallback={null}>
+        <PropertiesClient
+          result={result}
+          initialStatus={status}
+          initialListingType={listingType}
+          initialSearch={search}
+          isStale={stale}
+        />
+      </Suspense>
     </div>
   );
 }

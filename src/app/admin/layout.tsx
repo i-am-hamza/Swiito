@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+
+export const dynamic = "force-dynamic";
 import { adminClient } from "@/lib/supabase/admin";
 import { ToastProvider } from "@/components/ui/Toast";
 import { AdminShell } from "@/components/admin/AdminShell";

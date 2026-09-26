@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿import { Suspense } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LayoutGrid, MapIcon } from "lucide-react";
 import { parseFilters } from "@/lib/utils/filters";
@@ -103,27 +104,33 @@ export default async function PropertiesPage({
 
         <div className="flex gap-8 items-start">
           {/* Filter panel — desktop sidebar + mobile drawer button */}
-          <FilterPanel
-            current={filters}
-            localities={localities.map((l) => ({ slug: l.slug, name: l.name }))}
-            amenities={amenities}
-            total={total}
-          />
+          <Suspense fallback={null}>
+            <FilterPanel
+              current={filters}
+              localities={localities.map((l) => ({ slug: l.slug, name: l.name }))}
+              amenities={amenities}
+              total={total}
+            />
+          </Suspense>
 
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {/* Toolbar */}
             <div className="flex flex-wrap items-start gap-3 mb-6">
               <div className="flex-1 min-w-0">
-                <ActiveChips
-                  filters={filters}
-                  localityNames={localityNames}
-                />
+                <Suspense fallback={null}>
+                  <ActiveChips
+                    filters={filters}
+                    localityNames={localityNames}
+                  />
+                </Suspense>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
                 {!isMap && (
-                  <SortSelect value={filters.sort ?? "featured"} />
+                  <Suspense fallback={null}>
+                    <SortSelect value={filters.sort ?? "featured"} />
+                  </Suspense>
                 )}
 
                 {/* List ↔ Map toggle */}

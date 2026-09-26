@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getAdminLeads } from "@/lib/queries/admin";
 import { LeadsClient } from "@/components/admin/LeadsClient";
 
@@ -19,7 +20,9 @@ export default async function AdminLeadsPage({
   return (
     <div className="max-w-6xl space-y-4">
       <h1 className="font-display font-bold text-2xl text-fg">Leads</h1>
-      <LeadsClient result={result} initialStatus={status} initialSearch={search} />
+      <Suspense fallback={null}>
+        <LeadsClient result={result} initialStatus={status} initialSearch={search} />
+      </Suspense>
     </div>
   );
 }

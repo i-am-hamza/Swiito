@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getAdminUsers } from "@/lib/queries/admin";
 import { UsersClient } from "@/components/admin/UsersClient";
 
@@ -19,7 +20,9 @@ export default async function AdminUsersPage({
   return (
     <div className="max-w-5xl space-y-4">
       <h1 className="font-display font-bold text-2xl text-fg">Users</h1>
-      <UsersClient result={result} initialRole={role} initialSearch={search} />
+      <Suspense fallback={null}>
+        <UsersClient result={result} initialRole={role} initialSearch={search} />
+      </Suspense>
     </div>
   );
 }
