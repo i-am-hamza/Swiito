@@ -47,17 +47,17 @@ export function SignInForm() {
         : error.message);
       return;
     }
-    router.push(next);
     router.refresh();
+    router.push(next);
   }
 
   return (
     <div className="bg-surface rounded-xl border border-[var(--border)] p-8 shadow-card">
       <h1 className="font-display font-bold text-2xl text-fg mb-1">Sign in</h1>
       <p className="text-sm text-fg-muted mb-6">
-        New to Swiito?{" "}
-        <Link href="/sign-up" className="text-accent hover:underline">
-          Create a free account
+        Listing a property?{" "}
+        <Link href="/sign-up?role=owner" className="text-accent hover:underline">
+          Register as an owner
         </Link>
       </p>
 

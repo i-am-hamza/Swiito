@@ -13,7 +13,9 @@ export default async function BrowseLayout({ children }: { children: ReactNode }
   return (
     <>
       <Header user={user ? { id: user.id, email: user.email } : null} />
-      {children}
+      <div style={{ paddingTop: "calc(4rem + var(--safe-top, 0px))" }}>
+        {children}
+      </div>
       <Footer settings={settings} />
     </>
   );

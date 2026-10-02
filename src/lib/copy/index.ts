@@ -4,7 +4,7 @@
     howItWorks: "How it works",
     about: "About",
     listProperty: "List your property",
-    signIn: "Sign in",
+    signIn: "Owner login",
     logoAlt: "Swiito",
   },
 
@@ -48,13 +48,13 @@
       },
       {
         step: "2",
-        title: "Create a free account",
-        body: "Sign up in seconds — no OTP, no spam. Just an email and password.",
+        title: "Leave your details",
+        body: "Fill in your name and mobile number on any listing — no account needed.",
       },
       {
         step: "3",
         title: "Get our number and call",
-        body: "We give you Swiito's broker number. One call, real people, real answers.",
+        body: "We instantly share Swiito's broker number. One call, real people, real answers.",
       },
     ],
     ownerSteps: [

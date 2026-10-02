@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Shield, Calendar, MapPin, ChevronRight, Layers } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
 import { getPropertyDetail, getSimilarProperties } from "@/lib/queries/properties";
-import { getUserShortlistedIds } from "@/lib/queries/shortlist";
-import { hasRevealedContact } from "@/lib/queries/account";
-import { getSiteSettings } from "@/lib/queries/settings";
 import { Gallery } from "@/components/property/Gallery";
 import { ContactGate } from "@/components/property/ContactGate";
 import { HeartButton } from "@/components/property/HeartButton";
@@ -71,38 +67,11 @@ export default async function PropertyDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  const [property, settings, shortlistedIds] = await Promise.all([
-    getPropertyDetail(slug),
-    getSiteSettings(),
-    user ? getUserShortlistedIds() : Promise.resolve(new Set<string>()),
-  ]);
-
+  const property = await getPropertyDetail(slug);
   if (!property) notFound();
 
-  // Check existing lead — server-side, never leaks to client RSC payload
-  let initialBrokerInfo:
-    | { phone: string; display: string; whatsapp: string }
-    | undefined;
-
-  if (user) {
-    const revealed = await hasRevealedContact(property.id);
-    if (revealed) {
-      initialBrokerInfo = {
-        phone: settings.broker_phone,
-        display: settings.broker_display,
-        whatsapp: settings.broker_whatsapp,
-      };
-    }
-  }
-
-  const [similar] = await Promise.all([getSimilarProperties(property.id, property.localityId)]);
-
-  const isShortlisted = shortlistedIds.has(property.id);
+  const similar = await getSimilarProperties(property.id, property.localityId);
 
   // JSON-LD — no owner data, only public facts
   const coverMedia = property.media.find((m) => m.isCover) ?? property.media[0];
@@ -168,22 +137,33 @@ export default async function PropertyDetailPage({
         {/* Breadcrumb */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
           <nav className="flex items-center gap-1.5 text-xs text-fg-muted" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-fg transition-brand">Home</Link>
-            <ChevronRight size={12} aria-hidden="true" />
-            <Link href="/properties" className="hover:text-fg transition-brand">Properties</Link>
-            <ChevronRight size={12} aria-hidden="true" />
-            {property.localitySlug && (
-              <>
-                <Link
-                  href={`/ranchi/${property.localitySlug}`}
-                  className="hover:text-fg transition-brand capitalize"
-                >
-                  {property.localityName || property.localitySlug}
-                </Link>
-                <ChevronRight size={12} aria-hidden="true" />
-              </>
-            )}
-            <span className="text-fg truncate max-w-[180px]">{property.title}</span>
+            {/* Mobile: back link only */}
+            <Link
+              href="/properties"
+              className="sm:hidden flex items-center gap-1 hover:text-fg transition-brand"
+            >
+              <ChevronRight size={12} className="rotate-180" aria-hidden="true" />
+              Back to results
+            </Link>
+            {/* Desktop: full breadcrumb */}
+            <span className="hidden sm:contents">
+              <Link href="/" className="hover:text-fg transition-brand">Home</Link>
+              <ChevronRight size={12} aria-hidden="true" />
+              <Link href="/properties" className="hover:text-fg transition-brand">Properties</Link>
+              <ChevronRight size={12} aria-hidden="true" />
+              {property.localitySlug && (
+                <>
+                  <Link
+                    href={`/ranchi/${property.localitySlug}`}
+                    className="hover:text-fg transition-brand capitalize"
+                  >
+                    {property.localityName || property.localitySlug}
+                  </Link>
+                  <ChevronRight size={12} aria-hidden="true" />
+                </>
+              )}
+              <span className="text-fg truncate max-w-[200px]">{property.title}</span>
+            </span>
           </nav>
         </div>
 
@@ -210,7 +190,6 @@ export default async function PropertyDetailPage({
                 )}
                 <HeartButton
                   propertyId={property.id}
-                  initialShortlisted={isShortlisted}
                   className="ml-auto bg-surface-2 hover:bg-surface border border-[var(--border)]"
                 />
               </div>
@@ -364,11 +343,7 @@ export default async function PropertyDetailPage({
               {similar.length > 0 && (
                 <div>
                   <h2 className="font-display font-semibold text-fg mb-6">Similar properties</h2>
-                  <PropertyGrid
-                    properties={similar}
-                    columns={2}
-                    shortlistedIds={shortlistedIds}
-                  />
+                  <PropertyGrid properties={similar} columns={2} />
                 </div>
               )}
             </div>
@@ -379,8 +354,6 @@ export default async function PropertyDetailPage({
                 propertyId={property.id}
                 propertyTitle={property.title}
                 propertySlug={property.slug}
-                isSignedIn={!!user}
-                initialBrokerInfo={initialBrokerInfo}
               />
             </aside>
           </div>
@@ -397,8 +370,6 @@ export default async function PropertyDetailPage({
             propertyId={property.id}
             propertyTitle={property.title}
             propertySlug={property.slug}
-            isSignedIn={!!user}
-            initialBrokerInfo={initialBrokerInfo}
             variant="bar"
           />
         </div>

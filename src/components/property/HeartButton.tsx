@@ -1,55 +1,51 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils/format";
-import { createClient } from "@/lib/supabase/browser";
-import { toggleShortlist } from "@/lib/actions/shortlist";
+
+const lsKey = (id: string) => `swiito_sl_${id}`;
 
 interface HeartButtonProps {
   propertyId: string;
-  initialShortlisted: boolean;
+  initialShortlisted?: boolean;
   className?: string;
 }
 
-export function HeartButton({ propertyId, initialShortlisted, className }: HeartButtonProps) {
-  const [shortlisted, setShortlisted] = useState(initialShortlisted);
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+function subscribe(cb: () => void) {
+  window.addEventListener("storage", cb);
+  return () => window.removeEventListener("storage", cb);
+}
 
-  async function handleClick(e: React.MouseEvent) {
+export function HeartButton({ propertyId, initialShortlisted = false, className }: HeartButtonProps) {
+  const shortlisted = useSyncExternalStore(
+    subscribe,
+    () => { try { return localStorage.getItem(lsKey(propertyId)) === "1"; } catch { return false; } },
+    () => initialShortlisted
+  );
+
+  function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
 
-    const supabase = createClient();
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (!session) {
-      router.push(`/sign-in?next=${encodeURIComponent(window.location.pathname)}`);
-      return;
-    }
-
-    setShortlisted((prev) => !prev);
-    startTransition(async () => {
-      const result = await toggleShortlist(propertyId);
-      if (!result.ok) {
-        setShortlisted((prev) => !prev);
+    const next = !shortlisted;
+    try {
+      if (next) {
+        localStorage.setItem(lsKey(propertyId), "1");
+      } else {
+        localStorage.removeItem(lsKey(propertyId));
       }
-    });
+      window.dispatchEvent(new StorageEvent("storage", { key: lsKey(propertyId) }));
+    } catch {}
   }
 
   return (
     <button
       onClick={handleClick}
-      disabled={isPending}
       aria-label={shortlisted ? "Remove from shortlist" : "Save to shortlist"}
       className={cn(
         "flex items-center justify-center w-9 h-9 rounded-full transition-brand",
         "bg-black/40 hover:bg-black/60 backdrop-blur-sm",
-        isPending && "opacity-60",
         className
       )}
     >

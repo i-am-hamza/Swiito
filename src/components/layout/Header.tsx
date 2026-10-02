@@ -82,7 +82,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
             />
             {user ? (
               <>
-                <Link href="/account">
+                <Link href="/owner/dashboard">
                   <Button
                     variant="outline"
                     size="sm"
@@ -92,7 +92,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
                         : ""
                     }
                   >
-                    My Account
+                    Owner portal
                   </Button>
                 </Link>
                 <Button variant="solid" size="sm" onClick={handleSignOut}>
@@ -159,9 +159,9 @@ export function Header({ user }: { user: HeaderUser | null }) {
         <div className="mt-6 flex flex-col gap-3">
           {user ? (
             <>
-              <Link href="/account" onClick={() => setDrawerOpen(false)}>
+              <Link href="/owner/dashboard" onClick={() => setDrawerOpen(false)}>
                 <Button variant="outline" className="w-full justify-center">
-                  My Account
+                  Owner portal
                 </Button>
               </Link>
               <Button

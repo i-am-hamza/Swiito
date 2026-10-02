@@ -26,16 +26,17 @@ export function HeroSearchBar({ localities }: Props) {
 
   /* ── Filter localities ───────────────────────────────────────── */
   const q = query.trim().toLowerCase();
+  const list = localities ?? [];
   const filtered: LocalityHit[] = q
-    ? localities.filter((l) => l.name.toLowerCase().includes(q)).slice(0, 8)
-    : localities.slice(0, 8);
+    ? list.filter((l) => l.name.toLowerCase().includes(q)).slice(0, 8)
+    : list.slice(0, 8);
 
   /* ── Navigate on selection ───────────────────────────────────── */
   function navigate(slug?: string) {
     if (slug) {
       router.push(`/properties?locality=${slug}`);
     } else if (query.trim()) {
-      const exact = localities.find(
+      const exact = list.find(
         (l) => l.name.toLowerCase() === query.trim().toLowerCase()
       );
       if (exact) {
@@ -270,10 +271,10 @@ export function HeroSearchBar({ localities }: Props) {
                     navigate(
                       activeIndex >= 0
                         ? (q
-                            ? localities.filter((l) =>
+                            ? list.filter((l) =>
                                 l.name.toLowerCase().includes(q)
                               )
-                            : localities)[activeIndex]?.slug
+                            : list)[activeIndex]?.slug
                         : undefined
                     );
                   }
@@ -301,8 +302,8 @@ export function HeroSearchBar({ localities }: Props) {
           <div className="flex-1 overflow-y-auto" role="listbox" aria-label="Localities">
             {(() => {
               const hits = q
-                ? localities.filter((l) => l.name.toLowerCase().includes(q))
-                : localities;
+                ? list.filter((l) => l.name.toLowerCase().includes(q))
+                : list;
               if (hits.length === 0)
                 return (
                   <div className="px-4 py-12 text-center">

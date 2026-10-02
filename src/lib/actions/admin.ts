@@ -245,6 +245,30 @@ export async function verifyOwnerAction(
   }
 }
 
+export async function promoteToOwnerAction(
+  userId: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const actorId = await getAdminUserId();
+    const { data: old } = await adminClient
+      .from("profiles")
+      .select("role, is_owner")
+      .eq("id", userId)
+      .single();
+    const { error } = await adminClient
+      .from("profiles")
+      .update({ role: "owner", is_owner: true })
+      .eq("id", userId);
+    if (error) return { ok: false, error: error.message };
+    await writeAudit(actorId, "promote_to_owner", "profiles", userId, old as Record<string, unknown>, { role: "owner", is_owner: true });
+    revalidatePath("/admin/users");
+    revalidatePath(`/admin/users/${userId}`);
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Server error" };
+  }
+}
+
 export async function suspendUserAction(
   userId: string,
   suspended: boolean

@@ -9,8 +9,6 @@ import {
   getLocalities,
   getAmenities,
 } from "@/lib/queries/properties";
-import { getUserShortlistedIds } from "@/lib/queries/shortlist";
-import { createClient } from "@/lib/supabase/server";
 import { FilterPanel } from "@/components/filters/FilterPanel";
 import { ActiveChips } from "@/components/filters/ActiveChips";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
@@ -50,14 +48,10 @@ export default async function PropertiesPage({
   const filters = parseFilters(sp);
   const isMap = spGet(sp, "view") === "map";
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  const [localities, amenities, viewResult, shortlistedIds] = await Promise.all([
+  const [localities, amenities, viewResult] = await Promise.all([
     getLocalities(),
     getAmenities(),
     isMap ? getPropertyMapPins(filters) : getPropertiesPage(filters),
-    user ? getUserShortlistedIds() : Promise.resolve(new Set<string>()),
   ]);
 
   const pins = Array.isArray(viewResult) ? viewResult : [];
@@ -191,7 +185,7 @@ export default async function PropertiesPage({
               />
             ) : (
               <>
-                <PropertyGrid properties={page.properties} shortlistedIds={shortlistedIds} />
+                <PropertyGrid properties={page.properties} />
                 {page.totalPages > 1 && (
                   <div className="mt-10">
                     <Pagination

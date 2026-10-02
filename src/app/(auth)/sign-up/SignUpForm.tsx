@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/Input";
 export function SignUpForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const roleHint = searchParams.get("role");
 
   const [values, setValues] = useState({
     fullName: "",
@@ -38,6 +39,7 @@ export function SignUpForm() {
     }
 
     setLoading(true);
+    const role = roleHint === "owner" ? "owner" : "seeker";
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
       email: result.data.email,
@@ -46,8 +48,9 @@ export function SignUpForm() {
         data: {
           full_name: result.data.fullName,
           phone: result.data.phone,
+          role,
         },
-        emailRedirectTo: `${location.origin}/auth/callback?next=/`,
+        emailRedirectTo: `${location.origin}/auth/callback?next=${role === "owner" ? "/owner/dashboard" : "/"}`,
       },
     });
 
@@ -58,8 +61,6 @@ export function SignUpForm() {
     }
     router.push("/verify-email");
   }
-
-  const roleHint = searchParams.get("role");
 
   return (
     <div className="bg-surface rounded-xl border border-[var(--border)] p-8 shadow-card">
