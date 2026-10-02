@@ -135,10 +135,11 @@ export function FilterPanel({ current, localities, amenities, total }: FilterPan
         )}
       </button>
 
-      {/* ── Mobile filter drawer ─────────────────────────────────────────── */}
+      {/* ── Mobile filter bottom sheet ──────────────────────────────────── */}
       <Drawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        position="bottom"
         title="Filters"
         footer={
           <div className="flex items-center gap-3">

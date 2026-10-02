@@ -49,7 +49,7 @@ function mapProperty(
     lat: row.lat ?? null,
     lng: row.lng ?? null,
     isVerified: row.is_verified ?? false,
-    swiitoScore: (row.switto_score as Property["swiitoScore"]) ?? null,
+    swiitoScore: (row.swiito_score as Property["swiitoScore"]) ?? null,
     isFeatured: row.is_featured ?? false,
     viewCount: row.view_count ?? 0,
     publishedAt: row.published_at ?? new Date().toISOString(),

@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Find verified flats, rooms, PGs, and houses for rent and sale in Ranchi.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0f0f0f",
-    theme_color: "#8b6914",
+    background_color: "#0E3A1C",
+    theme_color: "#164F24",
     icons: [
       {
         src: "/icons/icon-192.png",

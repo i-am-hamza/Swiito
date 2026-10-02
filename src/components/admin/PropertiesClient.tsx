@@ -134,6 +134,7 @@ export function PropertiesClient({
 
       {/* Table */}
       <div className="bg-surface rounded-lg border border-[var(--border)] overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--border)] bg-surface-2">
@@ -234,6 +235,7 @@ export function PropertiesClient({
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}

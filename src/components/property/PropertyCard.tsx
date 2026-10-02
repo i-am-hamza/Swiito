@@ -66,10 +66,7 @@ export function PropertyCard({ property, shortlisted, priority = false }: Proper
             {TYPE_LABEL[property.propertyType] ?? property.propertyType}
           </span>
           {property.isVerified && (
-            <span
-              className="absolute bottom-3 left-3 px-2.5 py-1 text-xs font-medium rounded-full border border-[var(--border)]"
-              style={{ backgroundColor: "var(--sand)", color: "var(--text)" }}
-            >
+            <span className="absolute bottom-3 left-3 px-2.5 py-1 text-xs font-medium rounded-full bg-accent/90 text-on-accent backdrop-blur-sm">
               {COPY.propertyCard.verified}
             </span>
           )}

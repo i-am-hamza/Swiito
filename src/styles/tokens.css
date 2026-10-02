@@ -1,9 +1,16 @@
 :root {
-  --bg:#FAF9F6; --surface:#FFFFFF; --surface-2:#F2F1EC;
-  --border:rgba(16,22,20,.10);
-  --text:#101614; --text-muted:#5B6661;
-  --accent:#14663F; --accent-hover:#0F5232; --on-accent:#FFFFFF;
-  --sand:#E8DCC8;            /* light mode: surfaces only, never text */
+  /* LIGHT — warm cream on deep forest green */
+  --bg:#FAF8F2;
+  --surface:#FFFFFF;
+  --surface-2:#F0EDE3;
+  --border:rgba(10,40,20,.12);
+  --text:#11210F;
+  --text-muted:#51614F;
+  --accent:#164F24;         /* brand green */
+  --accent-hover:#0E3A1C;
+  --on-accent:#FFFFFF;      /* 9.64:1 */
+  --gold:#B87514;           /* darkened for contrast on light bg */
+  --on-gold:#11210F;
   --danger:#B3261E;
 
   --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:28px; --r-full:999px;
@@ -17,36 +24,53 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:#0C1210; --surface:#141C19; --surface-2:#1C2621;
-    --border:rgba(232,220,200,.10);
-    --text:#F4F1EA; --text-muted:#A3ADA8;
-    --accent:#35C08A; --accent-hover:#2FB27A;
-    --on-accent:#0C1210;
-    --sand:#E8DCC8;
+    --bg:#0E3A1C;           /* deep brand green */
+    --surface:#164F24;      /* brand green cards */
+    --surface-2:#2B6332;    /* raised / hover */
+    --border:rgba(220,149,45,.18); /* gold-tinted hairline */
+    --text:#FFFFFF;         /* 12.80:1 on --bg */
+    --text-muted:#A8BFA8;   /* 6.51:1 on --bg */
+    --accent:#DC952D;       /* gold is the action colour in dark */
+    --accent-hover:#C9862A;
+    --on-accent:#11210F;    /* dark ink on gold — 7.48:1 */
+    --gold:#E8BC6A;         /* 7.21:1 — use for gold text */
+    --on-gold:#11210F;
     --danger:#FF6B60;
     --shadow-card:0 1px 2px rgba(0,0,0,.5), 0 12px 32px rgba(0,0,0,.45);
     --shadow-lift:0 20px 56px rgba(0,0,0,.55);
   }
 }
 
+/* Manual dark toggle wins over prefers-color-scheme */
 :root[data-theme="dark"] {
-  --bg:#0C1210; --surface:#141C19; --surface-2:#1C2621;
-  --border:rgba(232,220,200,.10);
-  --text:#F4F1EA; --text-muted:#A3ADA8;
-  --accent:#35C08A; --accent-hover:#2FB27A;
-  --on-accent:#0C1210;
-  --sand:#E8DCC8;
+  --bg:#0E3A1C;
+  --surface:#164F24;
+  --surface-2:#2B6332;
+  --border:rgba(220,149,45,.18);
+  --text:#FFFFFF;
+  --text-muted:#A8BFA8;
+  --accent:#DC952D;
+  --accent-hover:#C9862A;
+  --on-accent:#11210F;
+  --gold:#E8BC6A;
+  --on-gold:#11210F;
   --danger:#FF6B60;
   --shadow-card:0 1px 2px rgba(0,0,0,.5), 0 12px 32px rgba(0,0,0,.45);
   --shadow-lift:0 20px 56px rgba(0,0,0,.55);
 }
 
 :root[data-theme="light"] {
-  --bg:#FAF9F6; --surface:#FFFFFF; --surface-2:#F2F1EC;
-  --border:rgba(16,22,20,.10);
-  --text:#101614; --text-muted:#5B6661;
-  --accent:#14663F; --accent-hover:#0F5232; --on-accent:#FFFFFF;
-  --sand:#E8DCC8;
+  --bg:#FAF8F2;
+  --surface:#FFFFFF;
+  --surface-2:#F0EDE3;
+  --border:rgba(10,40,20,.12);
+  --text:#11210F;
+  --text-muted:#51614F;
+  --accent:#164F24;
+  --accent-hover:#0E3A1C;
+  --on-accent:#FFFFFF;
+  --gold:#B87514;
+  --on-gold:#11210F;
   --danger:#B3261E;
   --shadow-card:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
   --shadow-lift:0 12px 40px rgba(0,0,0,.10);

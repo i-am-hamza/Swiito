@@ -9,7 +9,8 @@
   --color-fg-muted: var(--text-muted);
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
-  --color-sand: var(--sand);
+  --color-gold: var(--gold);
+  --color-on-gold: var(--on-gold);
   --color-danger: var(--danger);
   --color-border: var(--border);
 
@@ -38,6 +39,27 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+/* ── Glass search pill ────────────────────────────────────────────────────── */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  border-radius: 999px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-pill {
+    background: rgba(0, 0, 0, 0.80);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: rgba(255, 255, 255, 0.20);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   *,

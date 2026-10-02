@@ -46,7 +46,7 @@ export async function GET(req: NextRequest): Promise<Response> {
           height: "100%",
           position: "relative",
           fontFamily: "sans-serif",
-          backgroundColor: "#0e0e0e",
+          backgroundColor: "#0E3A1C",
         }}
       >
         {/* Background image */}
@@ -94,7 +94,7 @@ export async function GET(req: NextRequest): Promise<Response> {
             style={{
               fontSize: 20,
               fontWeight: 700,
-              color: "#a07c48",
+              color: "#E8BC6A",
               letterSpacing: "0.05em",
             }}
           >
@@ -127,7 +127,7 @@ export async function GET(req: NextRequest): Promise<Response> {
               style={{
                 fontSize: 32,
                 fontWeight: 800,
-                color: "#a07c48",
+                color: "#E8BC6A",
               }}
             >
               {price}

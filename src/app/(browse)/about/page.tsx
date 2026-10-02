@@ -94,14 +94,13 @@ export default function AboutPage() {
 
       {/* Our promise */}
       <section
-        className="py-20"
+        className="py-20 bg-accent text-on-accent"
         aria-labelledby="promise-heading"
-        style={{ backgroundColor: "var(--sand)" }}
       >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
             id="promise-heading"
-            className="font-display font-bold text-3xl text-fg text-center mb-10"
+            className="font-display font-bold text-3xl text-on-accent text-center mb-10"
           >
             Our promise
           </h2>
@@ -114,10 +113,10 @@ export default function AboutPage() {
               "We never charge seekers a commission.",
               "Listings are free to post for owners.",
             ].map((point) => (
-              <li key={point} className="flex items-start gap-3 text-sm text-fg-muted">
+              <li key={point} className="flex items-start gap-3 text-sm text-on-accent/80">
                 <Check
                   size={16}
-                  className="text-accent shrink-0 mt-0.5"
+                  className="text-on-accent shrink-0 mt-0.5"
                   aria-hidden="true"
                 />
                 {point}

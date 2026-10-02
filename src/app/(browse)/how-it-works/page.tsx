@@ -188,9 +188,8 @@ export default function HowItWorksPage() {
 
       {/* CTAs */}
       <section
-        className="py-20"
+        className="py-20 bg-surface-2"
         aria-label="Get started"
-        style={{ backgroundColor: "var(--sand)" }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-8 sm:gap-0 sm:divide-x sm:divide-[var(--border)]">

@@ -137,6 +137,7 @@ export function LeadsClient({ result, initialStatus, initialSearch }: Props) {
       </div>
 
       <div className="bg-surface rounded-lg border border-[var(--border)] overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--border)] bg-surface-2">
@@ -247,6 +248,7 @@ export function LeadsClient({ result, initialStatus, initialSearch }: Props) {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {totalPages > 1 && (

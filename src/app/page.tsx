@@ -155,8 +155,18 @@ export default async function HomePage() {
             className="object-cover"
             aria-hidden="true"
           />
+          {/* Base gradient — dark throughout for glass pill legibility */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/75"
+            className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/60 to-black/80"
+            aria-hidden="true"
+          />
+          {/* Extra scrim behind headline + search band */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 110% 55% at 50% 48%, rgba(0,0,0,0.38), transparent)",
+            }}
             aria-hidden="true"
           />
 
@@ -167,20 +177,55 @@ export default async function HomePage() {
             <p className="mt-4 text-lg sm:text-xl text-white/80 max-w-xl mx-auto">
               {COPY.hero.subheadline}
             </p>
-            <div className="flex justify-center">
-              <HeroSearchBar />
+
+            <div className="flex justify-center w-full">
+              <HeroSearchBar
+                localities={localities.map((l) => ({
+                  slug: l.slug,
+                  name: l.name,
+                  listingCount: l.listingCount,
+                }))}
+              />
             </div>
+
+            {/* Quick-filter type pills — horizontally scrollable on mobile */}
+            <div
+              className="mt-4 flex items-center gap-2 overflow-x-auto pb-1
+                sm:flex-wrap sm:justify-center sm:overflow-x-visible
+                [scrollbar-width:none] [-webkit-overflow-scrolling:touch]"
+              style={{ WebkitMaskImage: undefined }}
+              aria-label="Browse by property type"
+            >
+              {[
+                { label: "Flat",  value: "flat" },
+                { label: "Room",  value: "room" },
+                { label: "PG",    value: "pg" },
+                { label: "House", value: "independent_house" },
+                { label: "Shop",  value: "shop" },
+              ].map((t) => (
+                <Link
+                  key={t.value}
+                  href={`/properties?type=${t.value}`}
+                  className="shrink-0 inline-flex items-center px-4 py-2 rounded-full
+                    bg-white/15 text-white text-xs font-medium border border-white/25
+                    hover:bg-white/28 transition-brand min-h-[36px] whitespace-nowrap
+                    first:ml-4 last:mr-4 sm:first:ml-0 sm:last:mr-0"
+                >
+                  {t.label}
+                </Link>
+              ))}
+            </div>
+
             {/* Trust markers */}
-            <ul className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3 list-none">
+            <ul className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-3 list-none">
               {COPY.hero.trust.map((marker) => (
                 <li
                   key={marker}
-                  className="flex items-center gap-2 text-sm"
-                  style={{ color: "rgba(232,220,200,0.85)" }}
+                  className="flex items-center gap-2 text-sm text-white/80"
                 >
                   <Check
                     size={14}
-                    className="text-accent shrink-0"
+                    className="text-white/60 shrink-0"
                     aria-hidden="true"
                   />
                   {marker}
@@ -303,17 +348,15 @@ export default async function HomePage() {
 
         {/* ── OWNER BAND ────────────────────────────────────────────────── */}
         <section
-          className="py-20"
+          className="py-20 bg-accent text-on-accent"
           aria-labelledby="owner-band-heading"
-          style={{ backgroundColor: "var(--sand)" }}
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
               <div className="flex-1">
                 <h2
                   id="owner-band-heading"
-                  className="font-display font-bold text-3xl sm:text-4xl leading-tight"
-                  style={{ color: "var(--text)" }}
+                  className="font-display font-bold text-3xl sm:text-4xl leading-tight text-on-accent"
                 >
                   {COPY.ownerBand.heading}
                 </h2>
@@ -321,12 +364,11 @@ export default async function HomePage() {
                   {COPY.ownerBand.points.map((point) => (
                     <li
                       key={point}
-                      className="flex items-start gap-3 text-sm"
-                      style={{ color: "var(--text-muted)" }}
+                      className="flex items-start gap-3 text-sm text-on-accent/80"
                     >
                       <Check
                         size={16}
-                        className="text-accent shrink-0 mt-0.5"
+                        className="text-on-accent shrink-0 mt-0.5"
                         aria-hidden="true"
                       />
                       {point}
@@ -336,7 +378,11 @@ export default async function HomePage() {
               </div>
               <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
                 <Link href="/sign-up?role=owner">
-                  <Button variant="solid" size="lg" className="w-full sm:w-auto">
+                  <Button
+                    variant="solid"
+                    size="lg"
+                    className="w-full sm:w-auto bg-surface text-accent hover:bg-surface-2 border-0"
+                  >
                     {COPY.ownerBand.primaryCta}
                   </Button>
                 </Link>
@@ -344,8 +390,7 @@ export default async function HomePage() {
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3 text-base font-medium rounded-full border border-[var(--border)] hover:bg-black/5 transition-brand min-h-[52px]"
-                  style={{ color: "var(--text)" }}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3 text-base font-medium rounded-full border border-on-accent/30 text-on-accent hover:bg-on-accent/10 transition-brand min-h-[52px]"
                 >
                   <MessageSquare size={18} aria-hidden="true" />
                   {COPY.ownerBand.secondaryCta}
