@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSearchBar } from "@/components/layout/HeroSearchBar";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { Tabs } from "@/components/ui/Tabs";
 import { Accordion } from "@/components/ui/Accordion";
@@ -260,38 +261,41 @@ export default async function HomePage() {
           aria-labelledby="locality-heading"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              id="locality-heading"
-              title={COPY.locality.heading}
-              ctaLabel={COPY.locality.allLocalities}
-              ctaHref="/properties"
-            />
+            <ScrollReveal>
+              <SectionHeader
+                id="locality-heading"
+                title={COPY.locality.heading}
+                ctaLabel={COPY.locality.allLocalities}
+                ctaHref="/properties"
+              />
+            </ScrollReveal>
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-              {localities.map((loc) => (
-                <Link
-                  key={loc.slug}
-                  href={`/properties?locality=${loc.slug}`}
-                  className="group relative overflow-hidden rounded-lg aspect-square block transition-brand hover:shadow-lift"
-                >
-                  <Image
-                    src={loc.imageUrl}
-                    alt={loc.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-[420ms] group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="font-display font-semibold text-white text-base">
-                      {loc.name}
-                    </p>
-                    <p className="text-white/70 text-xs mt-0.5">
-                      {loc.listingCount > 0
-                        ? `${loc.listingCount} ${COPY.locality.listingsSuffix}`
-                        : COPY.locality.comingSoon}
-                    </p>
-                  </div>
-                </Link>
+              {localities.map((loc, i) => (
+                <ScrollReveal key={loc.slug} delay={Math.min(i, 5) * 60}>
+                  <Link
+                    href={`/properties?locality=${loc.slug}`}
+                    className="group relative overflow-hidden rounded-lg aspect-square block transition-brand hover:shadow-lift"
+                  >
+                    <Image
+                      src={loc.imageUrl}
+                      alt={loc.name}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-[420ms] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="font-display font-semibold text-white text-base">
+                        {loc.name}
+                      </p>
+                      <p className="text-white/70 text-xs mt-0.5">
+                        {loc.listingCount > 0
+                          ? `${loc.listingCount} ${COPY.locality.listingsSuffix}`
+                          : COPY.locality.comingSoon}
+                      </p>
+                    </div>
+                  </Link>
+                </ScrollReveal>
               ))}
             </div>
             <div className="mt-6 text-center">
@@ -312,15 +316,17 @@ export default async function HomePage() {
           aria-labelledby="how-it-works-heading"
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2
-              id="how-it-works-heading"
-              className="font-display font-bold text-3xl sm:text-4xl text-fg text-center"
-            >
-              {COPY.howItWorks.heading}
-            </h2>
-            <div className="mt-10">
-              <Tabs tabs={howItWorksTabs} />
-            </div>
+            <ScrollReveal>
+              <h2
+                id="how-it-works-heading"
+                className="font-display font-bold text-3xl sm:text-4xl text-fg text-center"
+              >
+                {COPY.howItWorks.heading}
+              </h2>
+              <div className="mt-10">
+                <Tabs tabs={howItWorksTabs} />
+              </div>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -331,15 +337,19 @@ export default async function HomePage() {
             aria-labelledby="why-swiito-heading"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2
-                id="why-swiito-heading"
-                className="font-display font-bold text-3xl sm:text-4xl text-fg text-center"
-              >
-                {COPY.whySwiito.heading}
-              </h2>
+              <ScrollReveal>
+                <h2
+                  id="why-swiito-heading"
+                  className="font-display font-bold text-3xl sm:text-4xl text-fg text-center"
+                >
+                  {COPY.whySwiito.heading}
+                </h2>
+              </ScrollReveal>
               <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {valueProps.map((vp) => (
-                  <ValuePropCard key={vp.id} vp={vp} />
+                {valueProps.map((vp, i) => (
+                  <ScrollReveal key={vp.id} delay={Math.min(i, 5) * 60}>
+                    <ValuePropCard vp={vp} />
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
@@ -347,6 +357,7 @@ export default async function HomePage() {
         )}
 
         {/* ── OWNER BAND ────────────────────────────────────────────────── */}
+        <ScrollReveal>
         <section
           className="py-20 bg-accent text-on-accent"
           aria-labelledby="owner-band-heading"
@@ -399,20 +410,25 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </ScrollReveal>
 
         {/* ── RECENTLY ADDED — hidden under 3 items ─────────────────────── */}
         {recent.length >= 3 && (
           <section className="py-20 bg-bg" aria-labelledby="recent-heading">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <SectionHeader
-                id="recent-heading"
-                title={COPY.recentlyAdded.heading}
-                ctaLabel={COPY.recentlyAdded.viewAll}
-                ctaHref="/properties?sort=newest"
-              />
+              <ScrollReveal>
+                <SectionHeader
+                  id="recent-heading"
+                  title={COPY.recentlyAdded.heading}
+                  ctaLabel={COPY.recentlyAdded.viewAll}
+                  ctaHref="/properties?sort=newest"
+                />
+              </ScrollReveal>
               <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recent.map((p) => (
-                  <PropertyCard key={p.id} property={p} />
+                {recent.map((p, i) => (
+                  <ScrollReveal key={p.id} delay={Math.min(i, 5) * 60}>
+                    <PropertyCard property={p} />
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
@@ -438,6 +454,7 @@ export default async function HomePage() {
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
         {faqs.length > 0 && (
+          <ScrollReveal>
           <section
             className="py-20 bg-surface-2"
             aria-labelledby="faq-heading"
@@ -463,6 +480,7 @@ export default async function HomePage() {
               </div>
             </div>
           </section>
+          </ScrollReveal>
         )}
       </main>
 

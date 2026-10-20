@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
+import { PageTransitionWrapper } from "@/components/layout/PageTransitionWrapper";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -66,7 +67,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        <PageTransitionWrapper>{children}</PageTransitionWrapper>
+      </body>
     </html>
   );
 }

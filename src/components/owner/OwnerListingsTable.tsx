@@ -198,7 +198,7 @@ export function OwnerListingsTable({ listings }: { listings: OwnerListing[] }) {
 
   return (
     <div className="bg-surface rounded-xl border border-[var(--border)] overflow-hidden">
-      <div className="overflow-x-auto">
+      <div className="scroll-area-x">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--border)] bg-surface-2">

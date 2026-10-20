@@ -119,7 +119,7 @@ export function Gallery({ media, title }: GalleryProps) {
 
       {/* Thumbnail strip — desktop only */}
       {count > 1 && (
-        <div className="hidden md:flex gap-2 px-1 mt-2 overflow-x-auto pb-1">
+        <div className="hidden md:flex gap-2 px-1 mt-2 scroll-area-x pb-2">
           {media.map((m, i) => (
             <button
               key={i}

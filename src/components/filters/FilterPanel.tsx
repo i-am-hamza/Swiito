@@ -100,7 +100,7 @@ export function FilterPanel({ current, localities, amenities, total }: FilterPan
     <>
       {/* ── Desktop sidebar ──────────────────────────────────────────────── */}
       <aside className="hidden lg:flex flex-col w-[280px] shrink-0">
-        <div className="sticky top-20 flex flex-col gap-4 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-4">
+        <div className="sticky top-20 flex flex-col gap-4 max-h-[calc(100vh-6rem)] scroll-area pr-2 pb-4">
           <div className="flex items-center justify-between">
             <span className="font-display font-semibold text-fg">Filters</span>
             {activeCount > 0 && (

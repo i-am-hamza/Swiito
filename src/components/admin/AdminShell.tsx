@@ -57,7 +57,7 @@ function SidebarContent({ nav, pathname, userName, onSignOut, onNav }: SidebarCo
       <div className="px-4 py-5 border-b border-[var(--border)]">
         <span className="font-display font-bold text-lg text-fg">Swiito Admin</span>
       </div>
-      <nav className="flex-1 overflow-y-auto px-2 py-3">
+      <nav className="flex-1 scroll-area px-2 py-3">
         <ul className="space-y-0.5">
           {nav.map((item) => {
             const active = isActive(item);
@@ -206,7 +206,7 @@ export function AdminShell({ children, pendingCount, userName }: AdminShellProps
         )}
 
         {/* Page content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto">{children}</main>
+        <main className="flex-1 p-4 lg:p-6 scroll-area">{children}</main>
       </div>
     </div>
   );

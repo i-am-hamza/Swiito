@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect, useId } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MapPin, Search, X, ArrowLeft } from "lucide-react";
+import { ScrollArea } from "@/components/ui/ScrollArea";
 import type { Locality } from "@/types";
 
 type LocalityHit = Pick<Locality, "slug" | "name" | "listingCount">;
@@ -13,6 +14,7 @@ interface Props {
 
 export function HeroSearchBar({ localities }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
   const listboxId = useId();
 
   const [query, setQuery] = useState("");
@@ -23,6 +25,9 @@ export function HeroSearchBar({ localities }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const savedScrollY = useRef(0);
+  const prevPathname = useRef(pathname);
 
   /* ── Filter localities ───────────────────────────────────────── */
   const q = query.trim().toLowerCase();
@@ -93,11 +98,58 @@ export function HeroSearchBar({ localities }: Props) {
     }
   }, [mobileOpen]);
 
-  /* ── Lock body scroll when mobile sheet open ─────────────────── */
+  /* ── Scroll lock — save and restore exact position ───────────── */
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (mobileOpen) {
+      savedScrollY.current = window.scrollY;
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${savedScrollY.current}px`;
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, savedScrollY.current);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+    };
   }, [mobileOpen]);
+
+  /* ── Browser back button support ────────────────────────────── */
+  useEffect(() => {
+    if (mobileOpen) {
+      history.pushState({ mobileSearch: true }, "");
+    }
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    function onPopState() {
+      if (mobileOpen) {
+        setMobileOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [mobileOpen]);
+
+  /* ── Close on route change ───────────────────────────────────── */
+  useEffect(() => {
+    if (pathname !== prevPathname.current) {
+      prevPathname.current = pathname;
+      if (mobileOpen) {
+        const t = setTimeout(() => setMobileOpen(false), 0);
+        return () => clearTimeout(t);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const showDropdown = isOpen && filtered.length > 0;
 
@@ -106,6 +158,7 @@ export function HeroSearchBar({ localities }: Props) {
       {/* ── Mobile trigger pill (< sm) ─────────────────────────────────── */}
       <div className="sm:hidden w-full mt-6 px-4">
         <button
+          ref={triggerRef}
           onClick={() => setMobileOpen(true)}
           className="glass-pill w-full min-h-[52px] flex items-center gap-3 px-5 text-left"
           aria-label="Search properties by area"
@@ -177,58 +230,59 @@ export function HeroSearchBar({ localities }: Props) {
           </button>
         </div>
 
-        {/* Desktop autocomplete — solid surface, NOT glass */}
+        {/* Desktop autocomplete — outer div clips scrollbar to rounded corner */}
         {showDropdown && (
-          <ul
-            id={listboxId}
-            role="listbox"
-            aria-label="Localities"
+          <div
             className="absolute top-full left-0 right-0 mt-2 bg-surface
-              border border-[var(--border)] rounded-xl shadow-lift overflow-hidden
-              z-50 max-h-72 overflow-y-auto"
+              border border-[var(--border)] rounded-xl shadow-lift overflow-hidden z-50"
+            style={{ animation: "dropdown-in var(--dur-fast) var(--ease) both" }}
           >
-            {filtered.map((loc, i) => (
-              <li
-                key={loc.slug}
-                id={`${listboxId}-opt-${i}`}
-                role="option"
-                aria-selected={i === activeIndex}
-                onMouseEnter={() => setActiveIndex(i)}
-                onMouseDown={(e) => {
-                  e.preventDefault(); // keep input focused
-                  navigate(loc.slug);
-                }}
-                className={`flex items-center justify-between px-4 py-3 cursor-pointer
-                  text-sm transition-brand ${
-                    i === activeIndex
-                      ? "bg-accent/10 text-accent"
-                      : "text-fg hover:bg-surface-2"
-                  }`}
-              >
-                <span className="flex items-center gap-2.5">
-                  <MapPin
-                    size={13}
-                    className="text-fg-muted shrink-0"
-                    aria-hidden="true"
-                  />
-                  {loc.name}
-                </span>
-                {loc.listingCount > 0 && (
-                  <span className="text-xs text-fg-muted tabular">
-                    {loc.listingCount.toLocaleString("en-IN")}{" "}
-                    listing{loc.listingCount !== 1 ? "s" : ""}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
+            <ScrollArea className="max-h-72 pr-1">
+              <ul id={listboxId} role="listbox" aria-label="Localities">
+                {filtered.map((loc, i) => (
+                  <li
+                    key={loc.slug}
+                    id={`${listboxId}-opt-${i}`}
+                    role="option"
+                    aria-selected={i === activeIndex}
+                    onMouseEnter={() => setActiveIndex(i)}
+                    onMouseDown={(e) => {
+                      e.preventDefault(); // keep input focused
+                      navigate(loc.slug);
+                    }}
+                    className={`flex items-center justify-between px-4 py-3 cursor-pointer
+                      text-sm transition-brand ${
+                        i === activeIndex
+                          ? "bg-accent/10 text-accent"
+                          : "text-fg hover:bg-surface-2"
+                      }`}
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <MapPin
+                        size={13}
+                        className="text-fg-muted shrink-0"
+                        aria-hidden="true"
+                      />
+                      {loc.name}
+                    </span>
+                    {loc.listingCount > 0 && (
+                      <span className="text-xs text-fg-muted tabular pr-1">
+                        {loc.listingCount.toLocaleString("en-IN")}{" "}
+                        listing{loc.listingCount !== 1 ? "s" : ""}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </ScrollArea>
+          </div>
         )}
       </div>
 
       {/* ── Mobile full-screen search sheet ────────────────────────────── */}
       {mobileOpen && (
         <div
-          className="sm:hidden fixed inset-0 z-[60] bg-bg flex flex-col"
+          className="fixed inset-0 z-[70] bg-surface flex flex-col"
           role="dialog"
           aria-modal="true"
           aria-label="Search properties"
@@ -242,7 +296,7 @@ export function HeroSearchBar({ localities }: Props) {
             }}
           >
             <button
-              onClick={() => setMobileOpen(false)}
+              onClick={() => { setMobileOpen(false); triggerRef.current?.focus(); }}
               aria-label="Close search"
               className="min-w-[44px] min-h-[44px] flex items-center justify-center
                 rounded-md text-fg-muted hover:text-fg hover:bg-surface-2 transition-brand"
@@ -278,7 +332,7 @@ export function HeroSearchBar({ localities }: Props) {
                         : undefined
                     );
                   }
-                  if (e.key === "Escape") setMobileOpen(false);
+                  if (e.key === "Escape") { setMobileOpen(false); triggerRef.current?.focus(); }
                 }}
                 placeholder="Search by area..."
                 aria-label="Search by area"
@@ -299,7 +353,7 @@ export function HeroSearchBar({ localities }: Props) {
           </div>
 
           {/* Results */}
-          <div className="flex-1 overflow-y-auto" role="listbox" aria-label="Localities">
+          <ScrollArea className="flex-1" role="listbox" aria-label="Localities">
             {(() => {
               const hits = q
                 ? list.filter((l) => l.name.toLowerCase().includes(q))
@@ -353,7 +407,7 @@ export function HeroSearchBar({ localities }: Props) {
                 </ul>
               );
             })()}
-          </div>
+          </ScrollArea>
 
           {/* Footer: search free text */}
           <div

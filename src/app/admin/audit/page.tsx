@@ -135,7 +135,7 @@ export default async function AuditLogPage({
                         <summary className="text-xs text-accent cursor-pointer hover:underline">
                           diff
                         </summary>
-                        <pre className="text-xs text-left mt-1 p-2 rounded bg-surface-2 max-w-xs overflow-auto">
+                        <pre className="text-xs text-left mt-1 p-2 rounded bg-surface-2 max-w-xs scroll-area overflow-x-auto">
                           {JSON.stringify(e.newData, null, 2)}
                         </pre>
                       </details>

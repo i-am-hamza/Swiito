@@ -265,8 +265,9 @@ export function ContactGate({
               onClick={() => setSheetOpen(false)}
               aria-hidden="true"
             />
+            <div className="absolute bottom-0 inset-x-0 bg-surface rounded-t-2xl max-h-[88vh] overflow-hidden flex flex-col">
             <div
-              className="absolute bottom-0 inset-x-0 bg-surface rounded-t-2xl px-5 pt-5 flex flex-col gap-4 max-h-[88vh] overflow-y-auto"
+              className="scroll-area flex-1 px-5 pt-5 flex flex-col gap-4"
               style={{
                 paddingBottom: "max(1.5rem, env(safe-area-inset-bottom, 0px))",
               }}
@@ -294,6 +295,7 @@ export function ContactGate({
               </div>
               {formContent}
             </div>
+            </div>
           </div>
         )}
       </>
@@ -311,18 +313,18 @@ export function ContactGate({
       </div>
 
       {revealed ? (
-        <>
-          <div className="text-center">
+        <div style={{ animation: "modal-in var(--dur) var(--ease) both" }}>
+          <div className="text-center mb-4">
             <p className="text-xs text-fg-muted mb-1">Swiito broker</p>
             <p className="font-bold text-xl text-fg tabular-nums">
               {brokerInfo!.display}
             </p>
           </div>
           {brokerButtons()}
-          <p className="text-[10px] text-fg-muted text-center">
+          <p className="text-[10px] text-fg-muted text-center mt-3">
             Our broker will help you arrange a visit.
           </p>
-        </>
+        </div>
       ) : (
         formContent
       )}

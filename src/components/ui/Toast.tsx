@@ -61,6 +61,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               "flex items-start gap-3 px-4 py-3 rounded-lg shadow-lift pointer-events-auto text-sm font-medium",
               STYLES[t.type]
             )}
+            style={{ animation: "toast-in var(--dur) var(--ease) both" }}
           >
             <span className="mt-0.5 shrink-0">{ICONS[t.type]}</span>
             <span className="flex-1 leading-snug">{t.message}</span>

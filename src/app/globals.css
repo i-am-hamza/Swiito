@@ -32,13 +32,144 @@
     box-shadow: var(--shadow-lift);
   }
   .transition-brand {
-    transition: transform var(--dur) var(--ease),
-      box-shadow var(--dur) var(--ease);
+    transition:
+      transform var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease),
+      opacity var(--dur-fast) var(--ease),
+      background-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
   }
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+
+  /* ── Scroll reveal ───────────────────────────────────────────────────────── */
+  /* No resting opacity:0 here — the animation's "from" keyframe handles it.
+     Content is fully readable with no JS/CSS running. */
+  .reveal-init.reveal-visible {
+    animation: reveal-up var(--dur-slow) var(--ease) both;
+  }
+
+  /* ── Mobile nav link entrance ────────────────────────────────────────────── */
+  .animate-nav-link-in {
+    animation: nav-link-in var(--dur) var(--ease) both;
+  }
+
+  /* ── Scroll areas ────────────────────────────────────────────────────────── */
+  /* Vertical scroller — use <ScrollArea> component for dynamic top/bottom fades */
+  .scroll-area {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+  /* Horizontal scroller (gallery, tables) */
+  .scroll-area-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+  .scroll-area::-webkit-scrollbar,
+  .scroll-area-x::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scroll-area::-webkit-scrollbar-track,
+  .scroll-area-x::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb,
+  .scroll-area-x::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 999px;
+  }
+  .scroll-area::-webkit-scrollbar-thumb:hover,
+  .scroll-area-x::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+  .scroll-area::-webkit-scrollbar-button,
+  .scroll-area-x::-webkit-scrollbar-button { display: none; }
+  .scroll-area::-webkit-scrollbar-corner,
+  .scroll-area-x::-webkit-scrollbar-corner { background: transparent; }
+
+  /* Fade mask — driven by data-fade-top / data-fade-bottom on the scroll element */
+  .scroll-area[data-fade-bottom] {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent 100%);
+  }
+  .scroll-area[data-fade-top] {
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 24px);
+  }
+  .scroll-area[data-fade-top][data-fade-bottom] {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent 100%
+    );
+  }
+
+  /* Touch: OS shows its own transient overlay bar — hide the permanent one */
+  @media (hover: none) {
+    .scroll-area::-webkit-scrollbar,
+    .scroll-area-x::-webkit-scrollbar { display: none; }
+    .scroll-area,
+    .scroll-area-x { scrollbar-width: none; -ms-overflow-style: none; }
+  }
+
+  /* ── Skeleton shimmer ────────────────────────────────────────────────────── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--surface-2) 0%,
+      color-mix(in srgb, var(--surface-2) 60%, var(--surface)) 50%,
+      var(--surface-2) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
 }
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heart-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nav-link-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Reduced motion overrides ─────────────────────────────────────────────── */
 
 /* ── Glass search pill ────────────────────────────────────────────────────── */
 .glass-pill {
@@ -66,8 +197,26 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Scroll reveals — already visible (no resting opacity:0), skip animation */
+  .reveal-init.reveal-visible {
+    animation: none !important;
+  }
+
+  /* Nav link entrance — show immediately at natural opacity:1 */
+  .animate-nav-link-in {
+    animation: none !important;
+    animation-delay: 0s !important;
+  }
+
+  /* Shimmer becomes static block */
+  .shimmer {
+    animation: none !important;
+    background: var(--surface-2) !important;
   }
 }
 

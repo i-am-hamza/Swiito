@@ -49,14 +49,15 @@ export function PropertyCard({ property, shortlisted, priority = false }: Proper
 
       {/* Card content — pointer-events-none so clicks pass to the link */}
       <div className="pointer-events-none select-none">
-        {/* Cover photo */}
-        <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
+        {/* Cover photo — overflow-hidden clips the hover scale */}
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3" }}>
           {cover ? (
             <PropertyCardImage
               url={cover.url}
               alt={property.title}
               priority={priority}
               propertyType={property.propertyType}
+              className="group-hover:scale-[1.04]"
             />
           ) : (
             <PropertyImagePlaceholder type={property.propertyType} />
